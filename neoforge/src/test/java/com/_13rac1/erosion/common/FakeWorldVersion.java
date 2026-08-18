@@ -1,5 +1,6 @@
 package com._13rac1.erosion.common;
 
+import java.util.Collections;
 import java.util.Date;
 
 import javax.annotation.Nonnull;
@@ -7,6 +8,7 @@ import javax.annotation.Nonnull;
 import net.minecraft.WorldVersion;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.level.storage.DataVersion;
+import net.neoforged.fml.loading.LoadingModList;
 
 public class FakeWorldVersion implements WorldVersion {
     static private boolean once = true;
@@ -18,8 +20,15 @@ public class FakeWorldVersion implements WorldVersion {
         }
         once = false;
 
-        //WorldVersion version = new FakeWorldVersion();
-        //net.minecraft.SharedConstants.setVersion(version);
+        // Creating a Block.Properties (which Blocks' static initializer does for every block)
+        // touches FeatureFlags, which asks NeoForge's FeatureFlagLoader for modded flags. That
+        // requires LoadingModList to be non-null even outside of a real game launch. Stub in an
+        // empty one.
+        LoadingModList.of(Collections.emptyList(), Collections.emptyList(), Collections.emptyList(),
+                Collections.emptyList(), Collections.emptyMap());
+
+        WorldVersion version = new FakeWorldVersion();
+        net.minecraft.SharedConstants.setVersion(version);
         net.minecraft.server.Bootstrap.bootStrap();
     }
 

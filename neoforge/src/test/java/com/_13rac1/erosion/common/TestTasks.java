@@ -3,6 +3,7 @@ package com._13rac1.erosion.common;
 import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
+import java.lang.reflect.Method;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.MapCodec;
@@ -234,7 +235,7 @@ public class TestTasks extends TestTasksCommon {
 
   @SuppressWarnings("deprecation")
   @Test
-  void testTreeInColumn() {
+  void testTreeInColumn() throws Exception {
     final Level world = mock(Level.class, levelSettings);
     final BlockPos pos = new BlockPos(10, 0, 0);
 
@@ -245,8 +246,10 @@ public class TestTasks extends TestTasksCommon {
     // So add it for the tests
     ArrayList<TagKey<Block>> tags = new ArrayList<TagKey<Block>>();
     tags.add(BlockTags.LOGS);
-    // TODO: builtInRegistryHolder() is deprecated, what's the new method?
-    Blocks.OAK_LOG.builtInRegistryHolder().bindTags(tags);
+    // bindTags() became package-private in 1.21, so it must be called via reflection from tests.
+    Method bindTags = net.minecraft.core.Holder.Reference.class.getDeclaredMethod("bindTags", java.util.Collection.class);
+    bindTags.setAccessible(true);
+    bindTags.invoke(Blocks.OAK_LOG.builtInRegistryHolder(), tags);
     // Now this works
     Assertions.assertTrue(Blocks.OAK_LOG.defaultBlockState().is(BlockTags.LOGS));
     // Blocks.OAK_LOG.defaultBlockState().getTags().toList() =>

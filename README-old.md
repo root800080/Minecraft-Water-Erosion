@@ -8,16 +8,6 @@ landscapes become more diverse and unique. Pass through a dry Desert valley one
 day and find it flooded the next. A stream may even change direction to dry up
 the original flow.
 
-> **This is a fork and continuation of the original [Water Erosion mod][UpstreamRepo]
-> by Brad Erickson ([13rac1][UpstreamRepo]).** The original project stopped
-> receiving updates after Minecraft 1.20.6. This fork carries the mod forward
-> to current Minecraft versions, starting with **1.21.1** for Forge, NeoForge,
-> and Fabric. All credit for the original design and implementation goes to
-> the upstream author; this repository continues the work under the same
-> GPLv3 license.
-
-[UpstreamRepo]: https://github.com/13rac1/Minecraft-Water-Erosion
-
 ## Goal
 
 Implement Erosion as though it were a regular Minecraft feature making the world
@@ -56,22 +46,27 @@ Decay hierarchy:
 
 ## Install
 
-Download the latest release from this repository's [GitHub releases][GitHubRepo],
-or from Modrinth / CurseForge once the fork's own listing is published there.
-
-[GitHubRepo]: https://github.com/root800080/Minecraft-Water-Erosion
+Download from: https://www.curseforge.com/minecraft/mc-mods/water-erosion
 
 Supported versions:
 
-* Forge 1.21.1
-* NeoForge 1.21.1
-* Fabric 1.21.1
-
-Previously Supported Versions (via [upstream][UpstreamRepo]):
-
-* Forge 1.12.2, 1.14.4, 1.15.2, 1.16.x, 1.18.x, 1.19.x, 1.20.x
+* Forge 1.20.x
 * NeoForge 1.20.x
-* Fabric 1.14.4, 1.15.2, 1.16.x, 1.18.x, 1.19.x, 1.20.x
+* Fabric 1.20.x
+
+Previously Supported Versions:
+
+* Fabric 1.14.4
+* Fabric 1.15.2
+* Fabric 1.16.x
+* Fabric 1.18.x
+* Fabric 1.19.x
+* Forge 1.12.2
+* Forge 1.14.4
+* Forge 1.15.2
+* Forge 1.16.x
+* Forge 1.18.x
+* Forge 1.19.x
 
 ## TODO features
 
@@ -94,7 +89,7 @@ the `randomTickSpeed` setting to speed up the process.
 Tested on Minecraft 1.20.1
 
 * `-388 73 258` - A massive waterfall covers the side of a mountain peak in a swamp
-* `-538 85 1133` - A waterfall fills the floor of a narrow forest crevice 
+* `-538 85 1133` - A waterfall fills the floor of a narrow forest crevice 
 * `-638 72 1459` - A stream finds multiple routes through the trees in a forest
 
 ## Inspiration
@@ -118,7 +113,7 @@ make
 
 ### Unit tests
 
-Erosion functionality is unit tested within the Forge and NeoForge codebases, run the unit tests with:
+Erosion functionality is unit tested within the Forge codebase, run the unit tests with:
 
 ```bash
 make test
@@ -132,16 +127,6 @@ Forge dependency versions are specified in:
 * `src/main/resources/META-INF/mods.toml`
 
 Check versions at: https://files.minecraftforge.net/net/minecraftforge/forge/promotions_slim.json
-
-### NeoForge Dependencies
-
-NeoForge dependency versions are specified in:
-
-* `build.gradle`
-* `gradle.properties`
-* `src/main/resources/META-INF/neoforge.mods.toml`
-
-Check versions at: https://projects.neoforged.net/neoforged/neoforge
 
 ### Fabric Dependencies
 
@@ -172,5 +157,4 @@ Source water blocks at or below the world sea level are ignored to reduce CPU us
 
 ## License
 
-Copyright 2020+ by Brad Erickson ([13rac1][UpstreamRepo]), continued by the
-contributors of this fork. Licensed GPLv3, see [LICENSE.txt](LICENSE.txt).
+Copyright 2020+ by Brad Erickson. Licensed GPLv3.

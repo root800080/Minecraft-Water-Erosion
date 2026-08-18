@@ -31,7 +31,7 @@ public class LiquidBlockMixin extends Block {
     return state.getBlock() == Blocks.WATER;
   }
 
-  @Inject(method = "randomTick", at = @At("HEAD"), require = 1)
+  @Inject(method = "randomTick", at = @At("HEAD"), require = 1, remap = false)
   public void randomTick(BlockState state, ServerLevel world, BlockPos pos, RandomSource rand, CallbackInfo info) {
     tasks.run(world, state, pos, rand);
   }

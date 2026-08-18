@@ -1,10 +1,5 @@
 package com._13rac1.erosion;
 
-import java.nio.file.Path;
-
-import com.electronwill.nightconfig.core.file.CommentedFileConfig;
-import com.electronwill.nightconfig.core.io.WritingMode;
-
 import net.neoforged.neoforge.common.ModConfigSpec;
 
 // https://github.com/neoforged/MDK/blob/main/src/main/java/com/example/examplemod/Config.java
@@ -25,13 +20,5 @@ public class Config {
     COMMON_BUILDER.pop();
 
     COMMON_CONFIG = COMMON_BUILDER.build();
-  }
-
-  public static void loadConfig(ModConfigSpec spec, Path path) {
-    final CommentedFileConfig configData = CommentedFileConfig.builder(path).sync().autosave()
-        .writingMode(WritingMode.REPLACE).build();
-
-    configData.load();
-    spec.setConfig(configData);
   }
 }
