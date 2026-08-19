@@ -5,11 +5,12 @@
   "name": "Water Erosion Continued",
   "description": "Erosion brings water to life in Minecraft. Worlds evolve with creeks, streams, and waterfalls as time progresses. Water flows may change direction or even stop as the water erodes to stone.",
   "authors": [
-    "13rac1"
+    "13rac1",
+    "MisterY3515"
   ],
   "contact": {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/water-erosion",
-    "sources": "https://github.com/13rac1/minecraft-water-erosion/"
+    "sources": "https://github.com/root800080/Minecraft-Water-Erosion/"
   },
   "license": "GPL-3.0",
   "icon": "assets/erosion/WaterErosionLogo.jpg",

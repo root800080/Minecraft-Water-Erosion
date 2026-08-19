@@ -37,9 +37,8 @@ public class TestMaybeFlowingWall extends TestTasksCommon {
         final Level world = mock(Level.class, levelSettings);
         final BlockPos pos = new BlockPos(10, 0, 0);
         final RandomSource rand = mock(RandomSource.class);
-        final BlockState bsWater = getWaterState(FluidLevel.FALLING7);
 
-        Assertions.assertFalse(tasks.maybeFlowingWall(world, bsWater, pos, rand, FluidLevel.FALLING7));
+        Assertions.assertFalse(tasks.maybeFlowingWall(world, pos, rand, FluidLevel.FALLING7, Vec3.ZERO));
     }
 
     @Test
@@ -47,12 +46,9 @@ public class TestMaybeFlowingWall extends TestTasksCommon {
         final Level world = mock(Level.class, levelSettings);
         final BlockPos pos = new BlockPos(10, 0, 0);
         final RandomSource rand = mock(RandomSource.class);
-        final BlockState bsWater = getWaterState(FluidLevel.FLOW1);
-        final Tasks spyTask = spy(tasks);
 
         Vec3 degree45 = new Vec3(0.707, 0, 0.707);
-        doReturn(degree45).when(spyTask).getFlowVelocity(any(Level.class), any(BlockPos.class), any(BlockState.class));
-        Assertions.assertFalse(spyTask.maybeFlowingWall(world, bsWater, pos, rand, FluidLevel.FLOW1));
+        Assertions.assertFalse(tasks.maybeFlowingWall(world, pos, rand, FluidLevel.FLOW1, degree45));
     }
 
     @Test
@@ -134,19 +130,14 @@ public class TestMaybeFlowingWall extends TestTasksCommon {
     }
 
     @Test
-
     void testBreakWall() {
         final Level world = mock(Level.class, levelSettings);
         final BlockPos pos = new BlockPos(10, 0, 0);
         final RandomSource rand = mock(RandomSource.class);
-        final BlockState bsWater = getWaterState(FluidLevel.FLOW1);
-        final Tasks spyTask = spy(tasks);
 
         Vec3i dirForward = Direction.WEST.getNormal();
         assertNotNull(dirForward);
         Vec3 west = Vec3.atLowerCornerOf(dirForward);
-        doReturn(west).when(spyTask).getFlowVelocity(any(Level.class), any(BlockPos.class),
-                any(BlockState.class));
         // Forward
         whenBlock(world, pos.west(), Blocks.DIRT);
         // Stop treeInColumn check
@@ -159,6 +150,6 @@ public class TestMaybeFlowingWall extends TestTasksCommon {
         whenBlock(world, pos.south(), Blocks.GOLD_BLOCK);
 
         when(rand.nextInt(anyInt())).thenReturn(0);
-        Assertions.assertTrue(spyTask.maybeFlowingWall(world, bsWater, pos, rand, FluidLevel.FLOW1));
+        Assertions.assertTrue(tasks.maybeFlowingWall(world, pos, rand, FluidLevel.FLOW1, west));
     }
 }

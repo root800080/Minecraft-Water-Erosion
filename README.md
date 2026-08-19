@@ -9,12 +9,13 @@ day and find it flooded the next. A stream may even change direction to dry up
 the original flow.
 
 > **Water Erosion Continued is a fork and continuation of the original
-> [Water Erosion mod][UpstreamRepo] by Brad Erickson ([13rac1][UpstreamRepo]).**
-> The original project stopped receiving updates after Minecraft 1.20.6. This
-> fork carries the mod forward to current Minecraft versions, starting with
-> **1.21.1** for Forge, NeoForge, and Fabric. All credit for the original
-> design and implementation goes to the upstream author; this repository
-> continues the work under the same GPLv3 license.
+> [Water Erosion mod][UpstreamRepo] by Brad Erickson ([13rac1][UpstreamRepo]),
+> continued by [MisterY3515][GitHubRepo].** The original project stopped
+> receiving updates after Minecraft 1.20.6. This fork carries the mod forward
+> to current Minecraft versions, starting with **1.21.1** for Forge, NeoForge,
+> and Fabric. All credit for the original design and implementation goes to
+> the upstream author; this repository continues the work under the same
+> GPLv3 license.
 
 [UpstreamRepo]: https://github.com/13rac1/Minecraft-Water-Erosion
 
@@ -172,5 +173,5 @@ Source water blocks at or below the world sea level are ignored to reduce CPU us
 
 ## License
 
-Copyright 2020+ by Brad Erickson ([13rac1][UpstreamRepo]), continued by the
-contributors of this fork. Licensed GPLv3, see [LICENSE.txt](LICENSE.txt).
+Copyright 2020+ by Brad Erickson ([13rac1][UpstreamRepo]), continued by
+[MisterY3515][GitHubRepo]. Licensed GPLv3, see [LICENSE.txt](LICENSE.txt).

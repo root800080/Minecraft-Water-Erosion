@@ -2,7 +2,6 @@ package com._13rac1.erosion.common;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -77,13 +76,16 @@ public class Tasks {
       return;
     }
 
-    if (maybeFlowingWall(world, state, pos, rand, level)) {
+    // Computed once and shared: maybeFlowingWall() and maybeDecayUnder() both need it.
+    Vec3 velocity = getFlowVelocity(world, pos, state);
+
+    if (maybeFlowingWall(world, pos, rand, level, velocity)) {
       // Return if the flow breaks a wall.
       return;
     }
 
     maybeErodeEdge(world, state, pos, rand, level);
-    maybeDecayUnder(world, state, pos, rand, level);
+    maybeDecayUnder(world, pos, rand, level, velocity);
   }
 
   /**
@@ -234,9 +236,6 @@ public class Tasks {
     return false;
   }
 
-  private static List<Integer> wallBreakers = Arrays.asList(FluidLevel.FLOW1, FluidLevel.FLOW2, FluidLevel.FLOW3,
-      FluidLevel.FLOW4, FluidLevel.FLOW5, FluidLevel.FLOW6, FluidLevel.FLOW7);
-
   private class wallBreakOption {
     Vec3i dir;
     Integer distance;
@@ -247,15 +246,12 @@ public class Tasks {
     }
   }
 
-  protected boolean maybeFlowingWall(Level world, BlockState state, BlockPos pos, RandomSource rand, Integer level) {
-    if (!wallBreakers.contains(level)) {
+  protected boolean maybeFlowingWall(Level world, BlockPos pos, RandomSource rand, Integer level, Vec3 velocity) {
+    if (level < FluidLevel.FLOW1 || level > FluidLevel.FLOW7) {
       // level Flow7 goes down, never to the side.
       return false;
     }
 
-    // Find flow direction: Velocity is a 3D vector normalized to 1 pointing the
-    // direction the water is flowing.
-    Vec3 velocity = getFlowVelocity(world, pos, state);
     // 0.8 is a good number to ignore 45 degree angle flows, but allow anything else
     // with a more definitive direction such as 0, 90, or 22.5.
     if (Math.abs(velocity.x) < 0.8 && Math.abs(velocity.z) < 0.8) {
@@ -528,7 +524,7 @@ public class Tasks {
     return AIR_WATER_NOT_FOUND;
   }
 
-  protected boolean maybeDecayUnder(Level world, BlockState state, BlockPos pos, RandomSource rand, Integer level) {
+  protected boolean maybeDecayUnder(Level world, BlockPos pos, RandomSource rand, Integer level, Vec3 velocity) {
     // TODO: Should we be using rand?
     // return if water is source or falling or FLOW7
     if (level == FluidLevel.SOURCE || level > FluidLevel.FLOW7) {
@@ -551,7 +547,6 @@ public class Tasks {
       return false;
     }
 
-    Vec3 velocity = getFlowVelocity(world, pos, state);
     // 0.8 is a good number to ignore 45 degree angle flows, but allow anything else
     // with a more definitive direction such as 0, 90, or 22.5.
     if (Math.abs(velocity.x) < 0.8 && Math.abs(velocity.z) < 0.8) {
@@ -604,19 +599,22 @@ public class Tasks {
   // Cobblestone and Stone Bricks grow moss near water, check every block around.
   // Returns true when a change is made.
   protected boolean maybeAddMoss(Level world, BlockPos pos, RandomSource rand) {
-    List<Vec3i> listDirection = posEightAround;
     // TODO: Add one level above the water line?
-    // listDirection.addAll(posEightAroundUp);
+    // posEightAroundUp
     // TODO: Add Moss Carpet in low light levels near water?
     // https://minecraft.fandom.com/wiki/Moss_Carpet
     // TODO: Should some dirt blocks turn into moss blocks in low light levels?
     // https://minecraft.fandom.com/wiki/Moss_Block
 
-    // Randomize the list each run.
-    // TODO: Just pick a random number since every path returns now.
-    Collections.shuffle(listDirection);
+    // Start from a random direction each run instead of shuffling the shared
+    // posEightAround list: avoids mutating shared static state (unsafe on
+    // multi-threaded servers) and uses the world's deterministic RandomSource
+    // instead of java.util.Random.
+    int directionCount = posEightAround.size();
+    int start = rand.nextInt(directionCount);
 
-    for (Vec3i dir : listDirection) {
+    for (int i = 0; i < directionCount; i++) {
+      Vec3i dir = posEightAround.get((start + i) % directionCount);
       if (dir == null) {
         throw new NullPointerException("dir cannot be null");
       }
